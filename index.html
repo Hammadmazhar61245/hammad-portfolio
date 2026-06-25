@@ -8,20 +8,11 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --bg:#08080f;
-  --bg2:#0f0f1a;
-  --bg3:#151524;
-  --purple:#7c3aed;
-  --purple-dim:rgba(124,58,237,0.15);
-  --purple-glow:rgba(124,58,237,0.35);
-  --rose:#f43f5e;
-  --rose-dim:rgba(244,63,94,0.12);
-  --amber:#f59e0b;
-  --text:#fafaf9;
-  --muted:#a1a1b5;
-  --border:rgba(124,58,237,0.2);
-  --border2:rgba(255,255,255,0.06);
-  --card:#0f0f1a;
+  --bg:#08080f;--bg2:#0f0f1a;--bg3:#151524;
+  --purple:#7c3aed;--pdim:rgba(124,58,237,0.15);--pglow:rgba(124,58,237,0.35);
+  --rose:#f43f5e;--rdim:rgba(244,63,94,0.12);
+  --amber:#f59e0b;--text:#fafaf9;--muted:#a1a1b5;
+  --border:rgba(124,58,237,0.22);--border2:rgba(255,255,255,0.06);
 }
 html{scroll-behavior:smooth;}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;}
@@ -29,39 +20,50 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 ::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:var(--purple);border-radius:2px;}
 
+/* GLOBAL BG CANVAS — fixed, behind everything */
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:16px 64px;background:rgba(8,8,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border2);}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:16px 64px;background:rgba(8,8,15,0.82);backdrop-filter:blur(18px);border-bottom:1px solid var(--border2);}
 .nav-logo{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:-0.5px;}
-.nav-logo span{color:var(--purple);}
+.nav-logo em{color:var(--purple);font-style:normal;}
 .nav-links{display:flex;gap:36px;list-style:none;}
 .nav-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s;letter-spacing:0.3px;}
 .nav-links a:hover{color:var(--text);}
 .nav-cta{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:var(--purple);border:1px solid var(--purple);padding:8px 22px;border-radius:6px;text-decoration:none;transition:background .2s;}
-.nav-cta:hover{background:var(--purple-dim);}
+.nav-cta:hover{background:var(--pdim);}
+
+/* SECTION WRAPPERS — all positioned relative so z-index works */
+#hero,#about-wrap,#skills-wrap,#projects-wrap,#contact-wrap{position:relative;z-index:1;}
+
+/* Every section's animation canvas is absolute inside its wrapper */
+.sec-canvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+
+/* Content inside sections sits above the canvas */
+.sec-content{position:relative;z-index:1;}
 
 /* HERO */
-#hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:80px 64px 60px;overflow:hidden;}
-#particles-canvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;}
-.hero-rings{position:absolute;right:-120px;top:50%;transform:translateY(-50%);width:600px;height:600px;pointer-events:none;z-index:0;}
-.hero-content{position:relative;z-index:1;max-width:780px;}
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:80px 64px 60px;overflow:hidden;}
+.hero-rings{position:absolute;right:-80px;top:50%;transform:translateY(-50%);width:580px;height:580px;pointer-events:none;z-index:0;}
+.hero-content{position:relative;z-index:2;max-width:780px;}
 .hero-eyebrow{font-size:13px;font-weight:500;letter-spacing:3px;color:var(--purple);text-transform:uppercase;margin-bottom:24px;opacity:0;animation:fadeUp .7s .2s forwards;display:flex;align-items:center;gap:10px;}
 .eyebrow-dot{width:6px;height:6px;background:var(--purple);border-radius:50%;animation:pulse 2s infinite;}
 .hero-name{font-family:'Space Grotesk',sans-serif;font-size:clamp(52px,8vw,96px);font-weight:700;line-height:0.95;letter-spacing:-3px;margin-bottom:16px;opacity:0;animation:fadeUp .7s .4s forwards;}
-.hero-name .line1{color:var(--text);display:block;}
-.hero-name .line2{display:block;background:linear-gradient(135deg,var(--purple) 0%,var(--rose) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-name .l1{color:var(--text);display:block;}
+.hero-name .l2{display:block;background:linear-gradient(135deg,var(--purple) 0%,var(--rose) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .hero-role{font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,2.5vw,26px);font-weight:400;color:var(--muted);margin-bottom:28px;opacity:0;animation:fadeUp .7s .6s forwards;display:flex;align-items:center;gap:10px;}
 .cursor{display:inline-block;width:2px;height:1em;background:var(--purple);vertical-align:middle;animation:blink 1s step-end infinite;}
 .hero-desc{max-width:540px;font-size:16px;line-height:1.85;color:var(--muted);margin-bottom:44px;opacity:0;animation:fadeUp .7s .8s forwards;}
 .hero-desc strong{color:var(--text);font-weight:500;}
 .hero-btns{display:flex;gap:16px;flex-wrap:wrap;opacity:0;animation:fadeUp .7s 1s forwards;}
-.btn-p{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#fff;background:var(--purple);padding:14px 34px;border-radius:8px;text-decoration:none;transition:transform .2s,box-shadow .2s;}
-.btn-p:hover{transform:translateY(-3px);box-shadow:0 8px 30px var(--purple-glow);}
-.btn-g{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--text);border:1px solid var(--border2);background:rgba(255,255,255,0.04);padding:14px 34px;border-radius:8px;text-decoration:none;transition:transform .2s,border-color .2s;}
+.btn-p{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#fff;background:var(--purple);padding:14px 34px;border-radius:8px;text-decoration:none;transition:transform .2s,box-shadow .2s;display:inline-block;}
+.btn-p:hover{transform:translateY(-3px);box-shadow:0 8px 30px var(--pglow);}
+.btn-g{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--text);border:1px solid var(--border2);background:rgba(255,255,255,0.04);padding:14px 34px;border-radius:8px;text-decoration:none;transition:transform .2s,border-color .2s;display:inline-block;}
 .btn-g:hover{transform:translateY(-3px);border-color:var(--border);}
 .hero-social{display:flex;gap:28px;margin-top:52px;opacity:0;animation:fadeUp .7s 1.2s forwards;}
 .hero-social a{font-size:12px;letter-spacing:1px;color:var(--muted);text-decoration:none;transition:color .2s;}
 .hero-social a:hover{color:var(--purple);}
-.scroll-hint{position:absolute;bottom:36px;left:64px;display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;opacity:0;animation:fadeUp .7s 1.4s forwards;}
+.scroll-hint{position:absolute;bottom:36px;left:64px;z-index:2;display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;opacity:0;animation:fadeUp .7s 1.4s forwards;}
 .scroll-line{width:40px;height:1px;background:var(--muted);}
 
 /* SECTION COMMONS */
@@ -73,17 +75,18 @@ section{padding:110px 64px;max-width:1160px;margin:0 auto;}
 .sec-line{width:48px;height:2px;background:linear-gradient(90deg,var(--purple),transparent);border-radius:1px;}
 
 /* ABOUT */
+#about-wrap{background:transparent;}
 .about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:72px;align-items:start;}
 .about-text p{font-size:15px;line-height:1.9;color:var(--muted);margin-bottom:18px;}
 .about-text strong{color:var(--text);font-weight:500;}
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:36px;}
-.stat{background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:20px 16px;text-align:center;transition:border-color .25s;}
+.stat{background:rgba(21,21,36,0.8);border:1px solid var(--border2);border-radius:12px;padding:20px 16px;text-align:center;transition:border-color .25s;backdrop-filter:blur(8px);}
 .stat:hover{border-color:var(--border);}
 .stat-n{font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700;background:linear-gradient(135deg,var(--purple),var(--rose));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
 .stat-l{font-size:11px;color:var(--muted);letter-spacing:0.5px;margin-top:5px;}
 .edu-stack{display:flex;flex-direction:column;gap:14px;}
-.edu-c{background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:18px 20px;border-left:2px solid var(--purple);transition:background .2s;}
-.edu-c:hover{background:var(--bg3);}
+.edu-c{background:rgba(15,15,26,0.85);border:1px solid var(--border2);border-radius:10px;padding:18px 20px;border-left:2px solid var(--purple);transition:background .2s;backdrop-filter:blur(8px);}
+.edu-c:hover{background:rgba(21,21,36,0.95);}
 .edu-deg{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px;}
 .edu-sch{font-size:12px;color:var(--muted);}
 .edu-meta{display:flex;justify-content:space-between;margin-top:10px;}
@@ -91,26 +94,26 @@ section{padding:110px 64px;max-width:1160px;margin:0 auto;}
 .edu-sc{font-size:12px;font-weight:600;color:var(--purple);}
 
 /* SKILLS */
-#skills{background:var(--bg2);padding:110px 0;}
-#skills .inner{max-width:1160px;margin:0 auto;padding:0 64px;}
+#skills-wrap{background:rgba(15,15,26,0.6);}
 .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-.sk-card{background:var(--bg);border:1px solid var(--border2);border-radius:14px;padding:26px;transition:border-color .25s,transform .25s;position:relative;overflow:hidden;}
+.sk-card{background:rgba(8,8,15,0.85);border:1px solid var(--border2);border-radius:14px;padding:26px;transition:border-color .25s,transform .25s;position:relative;overflow:hidden;backdrop-filter:blur(10px);}
 .sk-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--rose));transform:scaleX(0);transform-origin:left;transition:transform .35s;}
 .sk-card:hover{border-color:var(--border);transform:translateY(-4px);}
 .sk-card:hover::before{transform:scaleX(1);}
 .sk-title{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--purple);text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border2);}
 .sk-pills{display:flex;flex-wrap:wrap;gap:8px;}
 .pill{font-size:12px;font-weight:500;color:var(--muted);background:rgba(255,255,255,0.04);border:1px solid var(--border2);padding:5px 13px;border-radius:20px;transition:all .2s;}
-.pill:hover{color:var(--text);border-color:var(--border);background:var(--purple-dim);}
+.pill:hover{color:var(--text);border-color:var(--border);background:var(--pdim);}
 
 /* PROJECTS */
+#projects-wrap{background:transparent;}
 .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
-.pc{background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:28px;display:flex;flex-direction:column;transition:border-color .25s,transform .25s;position:relative;overflow:hidden;}
+.pc{background:rgba(15,15,26,0.88);border:1px solid var(--border2);border-radius:14px;padding:28px;display:flex;flex-direction:column;transition:border-color .25s,transform .25s;position:relative;overflow:hidden;backdrop-filter:blur(10px);}
 .pc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--purple),transparent);opacity:0;transition:opacity .35s;}
-.pc:hover{border-color:rgba(124,58,237,0.4);transform:translateY(-5px);}
+.pc:hover{border-color:rgba(124,58,237,0.45);transform:translateY(-5px);}
 .pc:hover::after{opacity:1;}
 .pc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;}
-.pc-ico{width:44px;height:44px;background:var(--purple-dim);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.pc-ico{width:44px;height:44px;background:var(--pdim);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;}
 .pc-gh{color:var(--muted);text-decoration:none;transition:color .2s;}
 .pc-gh:hover{color:var(--purple);}
 .pc-gh svg{display:block;}
@@ -121,36 +124,41 @@ section{padding:110px 64px;max-width:1160px;margin:0 auto;}
 .pt::before{content:'#';}
 
 /* CONTACT */
+#contact-wrap{background:rgba(15,15,26,0.5);}
 #contact{text-align:center;}
-.ct-wrap{max-width:600px;margin:0 auto;background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:60px 48px;}
+.ct-wrap{max-width:600px;margin:0 auto;background:rgba(15,15,26,0.9);border:1px solid var(--border2);border-radius:20px;padding:60px 48px;backdrop-filter:blur(14px);}
 .ct-sub{font-size:15px;color:var(--muted);line-height:1.85;margin-bottom:36px;}
 .ct-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:40px;text-align:left;}
-.ci{display:flex;flex-direction:column;gap:3px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;}
+.ci{display:flex;flex-direction:column;gap:3px;padding:14px 16px;background:rgba(21,21,36,0.9);border:1px solid var(--border2);border-radius:10px;}
 .ci-l{font-size:10px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;}
 .ci-v{font-size:13px;color:var(--text);font-weight:500;text-decoration:none;transition:color .2s;word-break:break-all;}
 .ci-v:hover{color:var(--purple);}
 
 /* FOOTER */
-footer{text-align:center;padding:32px;border-top:1px solid var(--border2);font-size:12px;color:var(--muted);}
+footer{position:relative;z-index:1;text-align:center;padding:32px;border-top:1px solid var(--border2);font-size:12px;color:var(--muted);}
 footer span{color:var(--purple);}
 
-/* ANIMATIONS */
+/* KEYFRAMES */
 @keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,0.5);}70%{box-shadow:0 0 0 8px rgba(124,58,237,0);}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,0.6);}70%{box-shadow:0 0 0 8px rgba(124,58,237,0);}}
 @keyframes spin-slow{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
 @keyframes spin-rev{from{transform:rotate(0deg);}to{transform:rotate(-360deg);}}
-@keyframes blob-morph{0%,100%{d:path("M60,0 C100,0 120,40 120,60 C120,100 80,120 60,120 C20,120 0,90 0,60 C0,20 20,0 60,0Z");}33%{d:path("M65,5 C108,8 118,45 115,68 C112,105 74,122 52,118 C15,112 -5,82 2,55 C10,18 22,-8 65,5Z");}66%{d:path("M55,2 C95,-2 125,35 122,65 C119,98 85,125 58,122 C22,119 -2,88 3,58 C8,22 15,6 55,2Z");}};
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
+@keyframes float2{0%,100%{transform:translateY(0);}50%{transform:translateY(12px);}}
+
+/* SCROLL REVEAL */
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .65s,transform .65s;}
-.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal.in{opacity:1;transform:translateY(0);}
+
 @media(max-width:900px){
   nav{padding:14px 24px;}.nav-links{display:none;}
   #hero,section{padding-left:24px;padding-right:24px;}
-  #skills .inner{padding:0 24px;}
   .about-grid{grid-template-columns:1fr;gap:48px;}
   .skills-grid,.proj-grid{grid-template-columns:1fr 1fr;}
   .stats-row{grid-template-columns:1fr 1fr;}
   .ct-grid{grid-template-columns:1fr;}
+  .hero-rings{display:none;}
 }
 @media(max-width:600px){.skills-grid,.proj-grid{grid-template-columns:1fr;}.ct-wrap{padding:36px 24px;}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
@@ -158,74 +166,64 @@ footer span{color:var(--purple);}
 </head>
 <body>
 
+<!-- GLOBAL BG CANVAS — runs the whole time you scroll -->
+<canvas id="bg-canvas"></canvas>
+
 <!-- NAV -->
 <nav>
-  <a href="#hero" class="nav-logo">M<span>.</span>Hammad</a>
+  <a href="#hero" class="nav-logo">M<em>.</em>Hammad</a>
   <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#about-wrap">About</a></li>
+    <li><a href="#skills-wrap">Skills</a></li>
+    <li><a href="#projects-wrap">Projects</a></li>
+    <li><a href="#contact-wrap">Contact</a></li>
   </ul>
   <a href="mailto:hammadmazhar512@gmail.com" class="nav-cta">Hire me</a>
 </nav>
 
-<!-- HERO -->
-<section id="hero" style="padding-top:0;max-width:none;">
-  <canvas id="particles-canvas"></canvas>
-
-  <!-- Rotating geometric rings SVG -->
-  <svg class="hero-rings" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<!-- ══════════ HERO ══════════ -->
+<div id="hero">
+  <!-- Animated orbital rings -->
+  <svg class="hero-rings" viewBox="0 0 580 580" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <defs>
       <linearGradient id="rg1" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.6"/>
-        <stop offset="100%" stop-color="#f43f5e" stop-opacity="0.1"/>
+        <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.7"/>
+        <stop offset="100%" stop-color="#f43f5e" stop-opacity="0.05"/>
       </linearGradient>
       <linearGradient id="rg2" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#f43f5e" stop-opacity="0.4"/>
+        <stop offset="0%" stop-color="#f43f5e" stop-opacity="0.5"/>
         <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.05"/>
       </linearGradient>
       <linearGradient id="rg3" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.3"/>
+        <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.35"/>
         <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
       </linearGradient>
     </defs>
-    <!-- Outer ring spinning -->
-    <g style="transform-origin:300px 300px;animation:spin-slow 28s linear infinite;">
-      <circle cx="300" cy="300" r="260" fill="none" stroke="url(#rg1)" stroke-width="1.5" stroke-dasharray="16 10"/>
-      <circle cx="300" cy="40" r="6" fill="#7c3aed" opacity="0.7"/>
-      <circle cx="300" cy="560" r="4" fill="#f43f5e" opacity="0.5"/>
+    <g style="transform-origin:290px 290px;animation:spin-slow 30s linear infinite;">
+      <circle cx="290" cy="290" r="255" fill="none" stroke="url(#rg1)" stroke-width="1.5" stroke-dasharray="18 10"/>
+      <circle cx="290" cy="35" r="7" fill="#7c3aed" opacity="0.8"/>
+      <circle cx="545" cy="290" r="5" fill="#f43f5e" opacity="0.5"/>
     </g>
-    <!-- Middle ring counter-spinning -->
-    <g style="transform-origin:300px 300px;animation:spin-rev 20s linear infinite;">
-      <circle cx="300" cy="300" r="200" fill="none" stroke="url(#rg2)" stroke-width="1" stroke-dasharray="6 14"/>
-      <circle cx="300" cy="100" r="5" fill="#f43f5e" opacity="0.6"/>
-      <circle cx="500" cy="300" r="4" fill="#7c3aed" opacity="0.5"/>
-      <circle cx="300" cy="500" r="3" fill="#f59e0b" opacity="0.5"/>
+    <g style="transform-origin:290px 290px;animation:spin-rev 22s linear infinite;">
+      <circle cx="290" cy="290" r="200" fill="none" stroke="url(#rg2)" stroke-width="1" stroke-dasharray="6 16"/>
+      <circle cx="290" cy="90" r="5" fill="#f43f5e" opacity="0.7"/>
+      <circle cx="490" cy="290" r="4" fill="#7c3aed" opacity="0.6"/>
+      <circle cx="290" cy="490" r="4" fill="#f59e0b" opacity="0.5"/>
     </g>
-    <!-- Inner ring -->
-    <g style="transform-origin:300px 300px;animation:spin-slow 14s linear infinite;">
-      <circle cx="300" cy="300" r="140" fill="none" stroke="url(#rg3)" stroke-width="1" stroke-dasharray="4 18"/>
-      <circle cx="300" cy="160" r="4" fill="#f59e0b" opacity="0.7"/>
-      <circle cx="440" cy="300" r="3" fill="#7c3aed" opacity="0.4"/>
+    <g style="transform-origin:290px 290px;animation:spin-slow 15s linear infinite;">
+      <circle cx="290" cy="290" r="140" fill="none" stroke="url(#rg3)" stroke-width="1" stroke-dasharray="4 20"/>
+      <circle cx="290" cy="150" r="4" fill="#f59e0b" opacity="0.8"/>
+      <circle cx="430" cy="290" r="3" fill="#7c3aed" opacity="0.5"/>
     </g>
-    <!-- Static center glow -->
-    <circle cx="300" cy="300" r="60" fill="none" stroke="#7c3aed" stroke-width="0.5" opacity="0.2"/>
-    <circle cx="300" cy="300" r="20" fill="#7c3aed" opacity="0.08"/>
-    <!-- Dot markers around outer ring -->
-    <g style="transform-origin:300px 300px;animation:spin-slow 36s linear infinite;">
-      <circle cx="300" cy="40" r="3" fill="#7c3aed" opacity="0.5"/>
-      <circle cx="560" cy="300" r="3" fill="#f43f5e" opacity="0.4"/>
-      <circle cx="300" cy="560" r="3" fill="#7c3aed" opacity="0.4"/>
-      <circle cx="40" cy="300" r="3" fill="#f59e0b" opacity="0.4"/>
-    </g>
+    <circle cx="290" cy="290" r="55" fill="none" stroke="#7c3aed" stroke-width="0.5" opacity="0.18"/>
+    <circle cx="290" cy="290" r="18" fill="#7c3aed" opacity="0.07"/>
   </svg>
 
   <div class="hero-content">
     <div class="hero-eyebrow"><span class="eyebrow-dot"></span>Available for opportunities</div>
     <h1 class="hero-name">
-      <span class="line1">Muhammad</span>
-      <span class="line2">Hammad</span>
+      <span class="l1">Muhammad</span>
+      <span class="l2">Hammad</span>
     </h1>
     <p class="hero-role">Full-Stack Developer<span class="cursor"></span></p>
     <p class="hero-desc">
@@ -234,8 +232,8 @@ footer span{color:var(--purple);}
       I write clean code and ship real projects.
     </p>
     <div class="hero-btns">
-      <a href="#projects" class="btn-p">View my work</a>
-      <a href="#contact" class="btn-g">Get in touch</a>
+      <a href="#projects-wrap" class="btn-p">View my work</a>
+      <a href="#contact-wrap" class="btn-g">Get in touch</a>
     </div>
     <div class="hero-social">
       <a href="https://github.com/Hammadmazhar61245" target="_blank">GitHub</a>
@@ -245,213 +243,341 @@ footer span{color:var(--purple);}
     </div>
   </div>
   <div class="scroll-hint"><span class="scroll-line"></span>Scroll down</div>
-</section>
+</div>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="sec-eye reveal">About</div>
-  <h2 class="sec-h reveal">Who I <span>am</span></h2>
-  <div class="sec-bar reveal"><div class="sec-line"></div></div>
-  <div class="about-grid">
-    <div class="about-text reveal">
-      <p>I'm a <strong>4th-semester Computer Science student</strong> at Air University Multan Campus with a genuine love for building software that works well and solves real problems.</p>
-      <p>My stack spans <strong>React, Node.js, Express, and MongoDB</strong> on the web side, <strong>C# and ASP.NET Core</strong> for enterprise-style apps, and <strong>Python</strong> for data-heavy and automation work. I run Arch Linux daily, which means I'm comfortable at the terminal.</p>
-      <p>Outside coursework I've shipped a <strong>multi-tenant SaaS event platform</strong>, an <strong>ML-powered gold trading bot</strong> for MetaTrader 5, and several full-stack apps from scratch. Currently looking for internships where I can contribute and keep growing.</p>
-      <div class="stats-row">
-        <div class="stat"><div class="stat-n">3.2</div><div class="stat-l">CGPA / 4.0</div></div>
-        <div class="stat"><div class="stat-n">8+</div><div class="stat-l">Projects</div></div>
-        <div class="stat"><div class="stat-n">2+</div><div class="stat-l">Years coding</div></div>
-        <div class="stat"><div class="stat-n">10+</div><div class="stat-l">Technologies</div></div>
-      </div>
-    </div>
-    <div class="reveal">
-      <div class="sec-eye" style="margin-bottom:20px;">Education</div>
-      <div class="edu-stack">
-        <div class="edu-c">
-          <div class="edu-deg">BS Computer Science</div>
-          <div class="edu-sch">Air University Multan Campus</div>
-          <div class="edu-meta"><span class="edu-yr">2022 — Present</span><span class="edu-sc">CGPA 3.2 / 4.0</span></div>
+<!-- ══════════ ABOUT ══════════ -->
+<div id="about-wrap">
+  <!-- Floating geometric shapes canvas -->
+  <canvas class="sec-canvas" id="about-canvas"></canvas>
+  <div class="sec-content">
+    <section id="about">
+      <div class="sec-eye reveal">About</div>
+      <h2 class="sec-h reveal">Who I <span>am</span></h2>
+      <div class="sec-bar reveal"><div class="sec-line"></div></div>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p>I'm a <strong>4th-semester Computer Science student</strong> at Air University Multan Campus with a genuine love for building software that works well and solves real problems.</p>
+          <p>My stack spans <strong>React, Node.js, Express, and MongoDB</strong> on the web side, <strong>C# and ASP.NET Core</strong> for enterprise-style apps, and <strong>Python</strong> for data-heavy and automation work. I run Arch Linux daily, which means I'm comfortable at the terminal.</p>
+          <p>Outside coursework I've shipped a <strong>multi-tenant SaaS event platform</strong>, an <strong>ML-powered gold trading bot</strong> for MetaTrader 5, and several full-stack apps from scratch. Currently looking for internships where I can contribute and keep growing.</p>
+          <div class="stats-row">
+            <div class="stat"><div class="stat-n">3.2</div><div class="stat-l">CGPA / 4.0</div></div>
+            <div class="stat"><div class="stat-n">8+</div><div class="stat-l">Projects</div></div>
+            <div class="stat"><div class="stat-n">2+</div><div class="stat-l">Years coding</div></div>
+            <div class="stat"><div class="stat-n">10+</div><div class="stat-l">Technologies</div></div>
+          </div>
         </div>
-        <div class="edu-c">
-          <div class="edu-deg">FSC Pre-Medical</div>
-          <div class="edu-sch">Multan Nishat College</div>
-          <div class="edu-meta"><span class="edu-yr">2023</span><span class="edu-sc">965 / 1000</span></div>
-        </div>
-        <div class="edu-c">
-          <div class="edu-deg">Matriculation</div>
-          <div class="edu-sch">Zakariya Public School</div>
-          <div class="edu-meta"><span class="edu-yr">2021</span><span class="edu-sc">1092 / 1100</span></div>
+        <div class="reveal">
+          <div class="sec-eye" style="margin-bottom:20px;">Education</div>
+          <div class="edu-stack">
+            <div class="edu-c"><div class="edu-deg">BS Computer Science</div><div class="edu-sch">Air University Multan Campus</div><div class="edu-meta"><span class="edu-yr">2022 — Present</span><span class="edu-sc">CGPA 3.2 / 4.0</span></div></div>
+            <div class="edu-c"><div class="edu-deg">FSC Pre-Medical</div><div class="edu-sch">Multan Nishat College</div><div class="edu-meta"><span class="edu-yr">2023</span><span class="edu-sc">965 / 1000</span></div></div>
+            <div class="edu-c"><div class="edu-deg">Matriculation</div><div class="edu-sch">Zakariya Public School</div><div class="edu-meta"><span class="edu-yr">2021</span><span class="edu-sc">1092 / 1100</span></div></div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<div id="skills">
-  <div class="inner">
-    <div class="sec-eye reveal">Skills</div>
-    <h2 class="sec-h reveal">What I <span>work with</span></h2>
-    <div class="sec-bar reveal"><div class="sec-line"></div></div>
-    <div class="skills-grid">
-      <div class="sk-card reveal"><div class="sk-title">Languages</div><div class="sk-pills"><span class="pill">JavaScript</span><span class="pill">Python</span><span class="pill">C#</span><span class="pill">C++</span><span class="pill">SQL</span></div></div>
-      <div class="sk-card reveal"><div class="sk-title">Frontend</div><div class="sk-pills"><span class="pill">React</span><span class="pill">Next.js</span><span class="pill">Tailwind</span><span class="pill">Bootstrap</span><span class="pill">HTML / CSS</span></div></div>
-      <div class="sk-card reveal"><div class="sk-title">Backend</div><div class="sk-pills"><span class="pill">Node.js</span><span class="pill">Express</span><span class="pill">ASP.NET Core</span><span class="pill">Django</span><span class="pill">Flask</span></div></div>
-      <div class="sk-card reveal"><div class="sk-title">Database</div><div class="sk-pills"><span class="pill">MongoDB</span><span class="pill">SQL Server</span><span class="pill">SQLite</span><span class="pill">EF Core</span></div></div>
-      <div class="sk-card reveal"><div class="sk-title">Tools & DevOps</div><div class="sk-pills"><span class="pill">Git</span><span class="pill">GitHub</span><span class="pill">Bash</span><span class="pill">Linux (Arch)</span><span class="pill">VS Code</span></div></div>
-      <div class="sk-card reveal"><div class="sk-title">ML & Other</div><div class="sk-pills"><span class="pill">LightGBM</span><span class="pill">MetaTrader 5</span><span class="pill">REST APIs</span><span class="pill">JWT Auth</span><span class="pill">Optuna</span></div></div>
-    </div>
+    </section>
   </div>
 </div>
 
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="sec-eye reveal">Projects</div>
-  <h2 class="sec-h reveal">Things I've <span>built</span></h2>
-  <div class="sec-bar reveal"><div class="sec-line"></div></div>
-  <div class="proj-grid">
-    <div class="pc reveal">
-      <div class="pc-top">
-        <div class="pc-ico">🎫</div>
-        <a href="https://github.com/Hammadmazhar61245/Event-Tickets-Management-SaaS-App" target="_blank" class="pc-gh"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+<!-- ══════════ SKILLS ══════════ -->
+<div id="skills-wrap">
+  <!-- Orbiting code symbols canvas -->
+  <canvas class="sec-canvas" id="skills-canvas"></canvas>
+  <div class="sec-content">
+    <section id="skills" style="max-width:1160px;">
+      <div class="sec-eye reveal">Skills</div>
+      <h2 class="sec-h reveal">What I <span>work with</span></h2>
+      <div class="sec-bar reveal"><div class="sec-line"></div></div>
+      <div class="skills-grid">
+        <div class="sk-card reveal"><div class="sk-title">Languages</div><div class="sk-pills"><span class="pill">JavaScript</span><span class="pill">Python</span><span class="pill">C#</span><span class="pill">C++</span><span class="pill">SQL</span></div></div>
+        <div class="sk-card reveal"><div class="sk-title">Frontend</div><div class="sk-pills"><span class="pill">React</span><span class="pill">Next.js</span><span class="pill">Tailwind</span><span class="pill">Bootstrap</span><span class="pill">HTML / CSS</span></div></div>
+        <div class="sk-card reveal"><div class="sk-title">Backend</div><div class="sk-pills"><span class="pill">Node.js</span><span class="pill">Express</span><span class="pill">ASP.NET Core</span><span class="pill">Django</span><span class="pill">Flask</span></div></div>
+        <div class="sk-card reveal"><div class="sk-title">Database</div><div class="sk-pills"><span class="pill">MongoDB</span><span class="pill">SQL Server</span><span class="pill">SQLite</span><span class="pill">EF Core</span></div></div>
+        <div class="sk-card reveal"><div class="sk-title">Tools & DevOps</div><div class="sk-pills"><span class="pill">Git</span><span class="pill">GitHub</span><span class="pill">Bash</span><span class="pill">Linux (Arch)</span><span class="pill">VS Code</span></div></div>
+        <div class="sk-card reveal"><div class="sk-title">ML & Other</div><div class="sk-pills"><span class="pill">LightGBM</span><span class="pill">MetaTrader 5</span><span class="pill">REST APIs</span><span class="pill">JWT Auth</span><span class="pill">Optuna</span></div></div>
       </div>
-      <div class="pc-name">Event Tickets SaaS App</div>
-      <div class="pc-desc">Multi-tenant SaaS platform for event creation, ticket management, and attendee tracking. Includes JWT authentication, dashboard analytics, and real-time ticket generation.</div>
-      <div class="pc-tags"><span class="pt">React</span><span class="pt">Node.js</span><span class="pt">MongoDB</span><span class="pt">SaaS</span></div>
-    </div>
-    <div class="pc reveal">
-      <div class="pc-top"><div class="pc-ico">📈</div></div>
-      <div class="pc-name">XAU Auto Trading Bot</div>
-      <div class="pc-desc">Automated gold trading system for XAU/USD using MetaTrader 5 API. ML ensemble with LightGBM + technical indicators for signal generation. Full risk management — stop-loss, take-profit, trailing stops.</div>
-      <div class="pc-tags"><span class="pt">Python</span><span class="pt">MetaTrader 5</span><span class="pt">LightGBM</span><span class="pt">Optuna</span></div>
-    </div>
-    <div class="pc reveal">
-      <div class="pc-top"><div class="pc-ico">🗂️</div></div>
-      <div class="pc-name">ProjectPilot — Task Manager</div>
-      <div class="pc-desc">Full-stack project management app with live CRUD operations via json-server REST API. Controlled forms with validation, dynamic project cards, and component-level React state management.</div>
-      <div class="pc-tags"><span class="pt">React</span><span class="pt">json-server</span><span class="pt">REST API</span><span class="pt">Tailwind</span></div>
-    </div>
-    <div class="pc reveal">
-      <div class="pc-top"><div class="pc-ico">🏥</div></div>
-      <div class="pc-name">Leave Management System</div>
-      <div class="pc-desc">ASP.NET Core web app for employee leave requests, approvals, and records. Role-based access control, Entity Framework Core ORM, and a clean admin dashboard.</div>
-      <div class="pc-tags"><span class="pt">C#</span><span class="pt">ASP.NET Core</span><span class="pt">EF Core</span><span class="pt">SQL Server</span></div>
-    </div>
-    <div class="pc reveal">
-      <div class="pc-top"><div class="pc-ico">🚆</div></div>
-      <div class="pc-name">Railway Reservation System</div>
-      <div class="pc-desc">Desktop application for end-to-end train booking — passenger management, schedule tracking, seat allocation, and user feedback. Full database-backed CRUD.</div>
-      <div class="pc-tags"><span class="pt">C#</span><span class="pt">SQL Server</span><span class="pt">Desktop App</span></div>
-    </div>
-    <div class="pc reveal">
-      <div class="pc-top">
-        <div class="pc-ico">⚡</div>
-        <a href="https://github.com/Hammadmazhar61245" target="_blank" class="pc-gh"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
-      </div>
-      <div class="pc-name">Full Stack Semester Project</div>
-      <div class="pc-desc">MERN stack web app with RESTful API, dynamic React frontend, and JWT authentication. Responsive UI with complete database integration and API documentation.</div>
-      <div class="pc-tags"><span class="pt">React</span><span class="pt">Node.js</span><span class="pt">Express</span><span class="pt">MongoDB</span></div>
-    </div>
+    </section>
   </div>
-</section>
+</div>
 
-<!-- CONTACT -->
-<section id="contact">
-  <div class="sec-eye reveal">Contact</div>
-  <h2 class="sec-h reveal">Let's <span>work together</span></h2>
-  <div class="sec-bar reveal" style="justify-content:center;"><div class="sec-line"></div></div>
-  <div class="ct-wrap reveal">
-    <p class="ct-sub">Open to internships, freelance projects, and collaborations. Whether you have a project in mind or just want to connect — my inbox is always open.</p>
-    <a href="mailto:hammadmazhar512@gmail.com" class="btn-p" style="display:inline-block;">Send me an email</a>
-    <div class="ct-grid">
-      <div class="ci"><span class="ci-l">Email</span><a href="mailto:hammadmazhar512@gmail.com" class="ci-v">hammadmazhar512@gmail.com</a></div>
-      <div class="ci"><span class="ci-l">Phone</span><a href="tel:+923160638882" class="ci-v">+92 316 0638882</a></div>
-      <div class="ci"><span class="ci-l">GitHub</span><a href="https://github.com/Hammadmazhar61245" target="_blank" class="ci-v">Hammadmazhar61245</a></div>
-      <div class="ci"><span class="ci-l">LinkedIn</span><a href="https://linkedin.com/in/muhammad-hammad-5964bb419" target="_blank" class="ci-v">muhammad-hammad</a></div>
-      <div class="ci"><span class="ci-l">LeetCode</span><a href="https://leetcode.com/u/hammad61245/" target="_blank" class="ci-v">hammad61245</a></div>
-      <div class="ci"><span class="ci-l">Location</span><span class="ci-v">Multan, Pakistan</span></div>
-    </div>
+<!-- ══════════ PROJECTS ══════════ -->
+<div id="projects-wrap">
+  <!-- Wave grid canvas -->
+  <canvas class="sec-canvas" id="projects-canvas"></canvas>
+  <div class="sec-content">
+    <section id="projects">
+      <div class="sec-eye reveal">Projects</div>
+      <h2 class="sec-h reveal">Things I've <span>built</span></h2>
+      <div class="sec-bar reveal"><div class="sec-line"></div></div>
+      <div class="proj-grid">
+        <div class="pc reveal">
+          <div class="pc-top"><div class="pc-ico">🎫</div><a href="https://github.com/Hammadmazhar61245/Event-Tickets-Management-SaaS-App" target="_blank" class="pc-gh"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a></div>
+          <div class="pc-name">Event Tickets SaaS App</div>
+          <div class="pc-desc">Multi-tenant SaaS platform for event creation, ticket management, and attendee tracking. Includes JWT authentication, dashboard analytics, and real-time ticket generation.</div>
+          <div class="pc-tags"><span class="pt">React</span><span class="pt">Node.js</span><span class="pt">MongoDB</span><span class="pt">SaaS</span></div>
+        </div>
+        <div class="pc reveal">
+          <div class="pc-top"><div class="pc-ico">📈</div></div>
+          <div class="pc-name">XAU Auto Trading Bot</div>
+          <div class="pc-desc">Automated gold trading system for XAU/USD using MetaTrader 5 API. ML ensemble with LightGBM + technical indicators. Full risk management — stop-loss, take-profit, trailing stops.</div>
+          <div class="pc-tags"><span class="pt">Python</span><span class="pt">MetaTrader 5</span><span class="pt">LightGBM</span><span class="pt">Optuna</span></div>
+        </div>
+        <div class="pc reveal">
+          <div class="pc-top"><div class="pc-ico">🗂️</div></div>
+          <div class="pc-name">ProjectPilot — Task Manager</div>
+          <div class="pc-desc">Full-stack project management app with live CRUD via json-server REST API. Controlled forms with validation, dynamic project cards, React state management.</div>
+          <div class="pc-tags"><span class="pt">React</span><span class="pt">json-server</span><span class="pt">REST API</span><span class="pt">Tailwind</span></div>
+        </div>
+        <div class="pc reveal">
+          <div class="pc-top"><div class="pc-ico">🏥</div></div>
+          <div class="pc-name">Leave Management System</div>
+          <div class="pc-desc">ASP.NET Core web app for employee leave requests, approvals, and records. Role-based access control, Entity Framework Core ORM, and a clean admin dashboard.</div>
+          <div class="pc-tags"><span class="pt">C#</span><span class="pt">ASP.NET Core</span><span class="pt">EF Core</span><span class="pt">SQL Server</span></div>
+        </div>
+        <div class="pc reveal">
+          <div class="pc-top"><div class="pc-ico">🚆</div></div>
+          <div class="pc-name">Railway Reservation System</div>
+          <div class="pc-desc">Desktop application for end-to-end train booking — passenger management, schedule tracking, seat allocation, and user feedback. Full database-backed CRUD.</div>
+          <div class="pc-tags"><span class="pt">C#</span><span class="pt">SQL Server</span><span class="pt">Desktop App</span></div>
+        </div>
+        <div class="pc reveal">
+          <div class="pc-top"><div class="pc-ico">⚡</div><a href="https://github.com/Hammadmazhar61245" target="_blank" class="pc-gh"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a></div>
+          <div class="pc-name">Full Stack Semester Project</div>
+          <div class="pc-desc">MERN stack web app with RESTful API, dynamic React frontend, and JWT authentication. Responsive UI with complete database integration.</div>
+          <div class="pc-tags"><span class="pt">React</span><span class="pt">Node.js</span><span class="pt">Express</span><span class="pt">MongoDB</span></div>
+        </div>
+      </div>
+    </section>
   </div>
-</section>
+</div>
+
+<!-- ══════════ CONTACT ══════════ -->
+<div id="contact-wrap">
+  <!-- Aurora pulse canvas -->
+  <canvas class="sec-canvas" id="contact-canvas"></canvas>
+  <div class="sec-content">
+    <section id="contact">
+      <div class="sec-eye reveal">Contact</div>
+      <h2 class="sec-h reveal">Let's <span>work together</span></h2>
+      <div class="sec-bar reveal" style="justify-content:center;"><div class="sec-line"></div></div>
+      <div class="ct-wrap reveal">
+        <p class="ct-sub">Open to internships, freelance projects, and collaborations. Whether you have a project in mind or just want to connect — my inbox is always open.</p>
+        <a href="mailto:hammadmazhar512@gmail.com" class="btn-p">Send me an email</a>
+        <div class="ct-grid">
+          <div class="ci"><span class="ci-l">Email</span><a href="mailto:hammadmazhar512@gmail.com" class="ci-v">hammadmazhar512@gmail.com</a></div>
+          <div class="ci"><span class="ci-l">Phone</span><a href="tel:+923160638882" class="ci-v">+92 316 0638882</a></div>
+          <div class="ci"><span class="ci-l">GitHub</span><a href="https://github.com/Hammadmazhar61245" target="_blank" class="ci-v">Hammadmazhar61245</a></div>
+          <div class="ci"><span class="ci-l">LinkedIn</span><a href="https://linkedin.com/in/muhammad-hammad-5964bb419" target="_blank" class="ci-v">muhammad-hammad</a></div>
+          <div class="ci"><span class="ci-l">LeetCode</span><a href="https://leetcode.com/u/hammad61245/" target="_blank" class="ci-v">hammad61245</a></div>
+          <div class="ci"><span class="ci-l">Location</span><span class="ci-v">Multan, Pakistan</span></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
 
 <footer>Designed & built by <span>Muhammad Hammad</span> · 2024</footer>
 
 <script>
-/* ── PARTICLES ── */
+/* ═══════════════════════════════════════════════
+   1. GLOBAL BG CANVAS — fixed, runs forever, parallax with scroll
+═══════════════════════════════════════════════ */
 (function(){
-  const canvas = document.getElementById('particles-canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, pts = [];
-  const N = 80, CONN = 120, PURPLE = '124,58,237', ROSE = '244,63,94';
+  const cv = document.getElementById('bg-canvas');
+  const ctx = cv.getContext('2d');
+  let W,H,pts=[],scrollY=0;
+  const N=90,CONN=130,P='124,58,237',R='244,63,94',A='245,158,11';
 
-  function resize(){
-    W = canvas.width = canvas.offsetWidth;
-    H = canvas.height = canvas.offsetHeight;
-  }
-
-  function rand(a,b){return a+Math.random()*(b-a);}
-
+  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+  function rnd(a,b){return a+Math.random()*(b-a);}
   function init(){
-    resize();
-    pts = [];
+    resize();pts=[];
     for(let i=0;i<N;i++){
-      pts.push({
-        x:rand(0,W), y:rand(0,H),
-        vx:rand(-0.3,0.3), vy:rand(-0.3,0.3),
-        r:rand(1,2.5),
-        c: Math.random() > 0.6 ? ROSE : PURPLE,
-        a: rand(0.3,0.8)
-      });
+      const col=[P,R,A][Math.floor(Math.random()*3)];
+      pts.push({x:rnd(0,W),y:rnd(0,H),vx:rnd(-0.25,0.25),vy:rnd(-0.25,0.25),r:rnd(1,2.5),c:col,a:rnd(0.25,0.7),py:rnd(-8,8)});
     }
   }
-
   function draw(){
     ctx.clearRect(0,0,W,H);
+    const sy=window.scrollY;
     for(let i=0;i<pts.length;i++){
-      const p = pts[i];
-      p.x += p.vx; p.y += p.vy;
-      if(p.x<0||p.x>W) p.vx*=-1;
-      if(p.y<0||p.y>H) p.vy*=-1;
+      const p=pts[i];
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+      const dy=sy*0.04*p.py; /* subtle parallax offset per particle */
+      const rx=p.x,ry=(p.y+dy+H*10)%H;
       for(let j=i+1;j<pts.length;j++){
-        const q = pts[j];
-        const dx=p.x-q.x, dy=p.y-q.y;
-        const dist=Math.sqrt(dx*dx+dy*dy);
-        if(dist<CONN){
-          const alpha = (1-dist/CONN)*0.25;
-          ctx.beginPath();
-          ctx.moveTo(p.x,p.y);
-          ctx.lineTo(q.x,q.y);
-          ctx.strokeStyle=`rgba(${p.c},${alpha})`;
-          ctx.lineWidth=0.6;
-          ctx.stroke();
+        const q=pts[j];
+        const qdy=sy*0.04*q.py;
+        const qry=(q.y+qdy+H*10)%H;
+        const dx2=rx-q.x,dy2=ry-qry;
+        const d=Math.sqrt(dx2*dx2+dy2*dy2);
+        if(d<CONN){
+          ctx.beginPath();ctx.moveTo(rx,ry);ctx.lineTo(q.x,qry);
+          ctx.strokeStyle=`rgba(${p.c},${(1-d/CONN)*0.2})`;
+          ctx.lineWidth=0.5;ctx.stroke();
         }
       }
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(${p.c},${p.a})`;
-      ctx.fill();
+      ctx.beginPath();ctx.arc(rx,ry,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${p.c},${p.a})`;ctx.fill();
     }
     requestAnimationFrame(draw);
   }
-
-  window.addEventListener('resize', ()=>{resize();});
-  init();
-  draw();
+  window.addEventListener('resize',()=>{resize();});
+  init();draw();
 })();
 
-/* ── SCROLL REVEAL ── */
-const observer = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.classList.add('visible');
-      observer.unobserve(e.target);
+
+/* ═══════════════════════════════════════════════
+   2. ABOUT CANVAS — drifting hollow polygons
+═══════════════════════════════════════════════ */
+(function(){
+  const cv=document.getElementById('about-canvas');
+  const ctx=cv.getContext('2d');
+  let shapes=[];
+  function resize(){cv.width=cv.offsetWidth;cv.height=cv.offsetHeight;}
+  function poly(ctx,x,y,n,r,rot){
+    ctx.beginPath();
+    for(let i=0;i<n;i++){
+      const a=rot+i*(Math.PI*2/n);
+      i===0?ctx.moveTo(x+r*Math.cos(a),y+r*Math.sin(a)):ctx.lineTo(x+r*Math.cos(a),y+r*Math.sin(a));
+    }ctx.closePath();
+  }
+  function init(){
+    resize();shapes=[];
+    const cols=['rgba(124,58,237,0.18)','rgba(244,63,94,0.15)','rgba(245,158,11,0.12)'];
+    const sides=[3,4,5,6];
+    for(let i=0;i<18;i++){
+      shapes.push({x:Math.random()*cv.width,y:Math.random()*cv.height,
+        vx:(Math.random()-0.5)*0.4,vy:(Math.random()-0.5)*0.4,
+        r:20+Math.random()*60,n:sides[Math.floor(Math.random()*sides.length)],
+        rot:Math.random()*Math.PI*2,vr:(Math.random()-0.5)*0.008,
+        c:cols[Math.floor(Math.random()*cols.length)],lw:0.8+Math.random()*1.2});
     }
-  });
-},{threshold:0.1});
+  }
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    shapes.forEach(s=>{
+      s.x+=s.vx;s.y+=s.vy;s.rot+=s.vr;
+      if(s.x<-80)s.x=cv.width+80;if(s.x>cv.width+80)s.x=-80;
+      if(s.y<-80)s.y=cv.height+80;if(s.y>cv.height+80)s.y=-80;
+      poly(ctx,s.x,s.y,s.n,s.r,s.rot);
+      ctx.strokeStyle=s.c;ctx.lineWidth=s.lw;ctx.stroke();
+    });
+    requestAnimationFrame(draw);
+  }
+  const ro=new ResizeObserver(()=>{resize();});ro.observe(cv.parentElement);
+  init();draw();
+})();
+
+
+/* ═══════════════════════════════════════════════
+   3. SKILLS CANVAS — flowing code rain (matrix-style, subtle)
+═══════════════════════════════════════════════ */
+(function(){
+  const cv=document.getElementById('skills-canvas');
+  const ctx=cv.getContext('2d');
+  const CHARS='</>{}[]()=>;const let function return import export class async await'.split(' ');
+  let cols2=[];
+  function resize(){
+    cv.width=cv.offsetWidth;cv.height=cv.offsetHeight;
+    const ncols=Math.floor(cv.width/60);
+    cols2=[];
+    for(let i=0;i<ncols;i++){cols2.push({x:Math.random()*cv.width,y:Math.random()*cv.height,vy:0.4+Math.random()*0.6,alpha:0.04+Math.random()*0.1,char:CHARS[Math.floor(Math.random()*CHARS.length)],size:10+Math.floor(Math.random()*8),timer:Math.random()*120});}
+  }
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    cols2.forEach(c=>{
+      c.y+=c.vy;c.timer--;
+      if(c.timer<=0){c.char=CHARS[Math.floor(Math.random()*CHARS.length)];c.timer=80+Math.random()*120;}
+      if(c.y>cv.height+40){c.y=-20;c.x=Math.random()*cv.width;}
+      ctx.font=`${c.size}px monospace`;
+      ctx.fillStyle=`rgba(124,58,237,${c.alpha})`;
+      ctx.fillText(c.char,c.x,c.y);
+    });
+    requestAnimationFrame(draw);
+  }
+  const ro=new ResizeObserver(()=>{resize();});ro.observe(cv.parentElement);
+  resize();draw();
+})();
+
+
+/* ═══════════════════════════════════════════════
+   4. PROJECTS CANVAS — scrolling dot grid wave
+═══════════════════════════════════════════════ */
+(function(){
+  const cv=document.getElementById('projects-canvas');
+  const ctx=cv.getContext('2d');
+  let t=0;
+  function resize(){cv.width=cv.offsetWidth;cv.height=cv.offsetHeight;}
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    const sp=36,r=1.5;
+    const cols3=Math.ceil(cv.width/sp)+2;
+    const rows=Math.ceil(cv.height/sp)+2;
+    for(let i=0;i<cols3;i++){
+      for(let j=0;j<rows;j++){
+        const x=i*sp,y=j*sp;
+        const wave=Math.sin((x+t*0.6)*0.025+t*0.02)*Math.cos((y+t*0.4)*0.025)*12;
+        const dist=Math.sqrt((x-cv.width/2)**2+(y-cv.height/2)**2);
+        const alpha=0.06+0.08*Math.sin(dist*0.012-t*0.018);
+        const col=Math.sin(i*0.3+t*0.01)>0?'124,58,237':'244,63,94';
+        ctx.beginPath();
+        ctx.arc(x,y+wave,r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(${col},${Math.max(0,alpha)})`;
+        ctx.fill();
+      }
+    }
+    t+=0.8;
+    requestAnimationFrame(draw);
+  }
+  const ro=new ResizeObserver(()=>{resize();});ro.observe(cv.parentElement);
+  resize();draw();
+})();
+
+
+/* ═══════════════════════════════════════════════
+   5. CONTACT CANVAS — expanding aurora rings
+═══════════════════════════════════════════════ */
+(function(){
+  const cv=document.getElementById('contact-canvas');
+  const ctx=cv.getContext('2d');
+  let rings=[];
+  function resize(){cv.width=cv.offsetWidth;cv.height=cv.offsetHeight;spawnRings();}
+  function spawnRings(){
+    rings=[];
+    for(let i=0;i<5;i++){
+      rings.push({r:40+i*80,maxR:cv.width*0.7,alpha:0.18-i*0.03,vr:0.35+i*0.08,col:i%2===0?'124,58,237':'244,63,94'});
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    const cx=cv.width/2,cy=cv.height/2;
+    rings.forEach(ring=>{
+      ring.r+=ring.vr;
+      if(ring.r>ring.maxR){ring.r=30;}
+      const fade=1-(ring.r/ring.maxR);
+      ctx.beginPath();ctx.arc(cx,cy,ring.r,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(${ring.col},${ring.alpha*fade})`;
+      ctx.lineWidth=1.5;ctx.stroke();
+    });
+    requestAnimationFrame(draw);
+  }
+  const ro=new ResizeObserver(()=>{resize();});ro.observe(cv.parentElement);
+  resize();draw();
+})();
+
+
+/* ═══════════════════════════════════════════════
+   6. SCROLL REVEAL
+═══════════════════════════════════════════════ */
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');}});
+},{threshold:0.08});
 document.querySelectorAll('.reveal').forEach((el,i)=>{
-  const row = Math.floor(i/3);
-  el.style.transitionDelay = (i%3)*0.1+'s';
-  observer.observe(el);
+  el.style.transitionDelay=(i%4)*0.08+'s';
+  io.observe(el);
 });
 </script>
 </body>
