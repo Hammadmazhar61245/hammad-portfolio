@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Muhammad Hammad — CV</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --dark: #1f2937;
+    --mid: #4b5563;
+    --soft: #9ca3af;
+    --line: #e5e7eb;
+    --bg: #ffffff;
+    --accent: #1a3a5c;
+    --accent-light: #e8eef5;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+
+  .cv {
+    width: 210mm;
+    background: var(--bg);
+    box-shadow: 0 4px 40px rgba(0,0,0,0.13);
+  }
+
+  /* ── HEADER ── */
+  .cv-header {
+    padding: 30px 44px 18px;
+    border-bottom: 2.5px solid var(--accent);
+  }
+
+  .name {
+    font-family: 'EB Garamond', serif;
+    font-size: 42px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .name span { font-weight: 400; color: var(--dark); }
+
+  .title-tag {
+    font-size: 9.5px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--soft);
+    margin-bottom: 12px;
+  }
+
+  .contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 9px;
+    color: var(--mid);
+    padding-top: 11px;
+    border-top: 1px solid var(--line);
+    align-items: center;
+    gap: 0;
+  }
+
+  .contact-item {
+    padding: 0 12px;
+    border-right: 1px solid var(--line);
+    line-height: 1.4;
+  }
+
+  .contact-item:first-child { padding-left: 0; }
+  .contact-item:last-child { border-right: none; }
+
+  .contact-item a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  /* ── BODY ── */
+  .cv-body {
+    padding: 20px 44px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .sec-title {
+    font-size: 7.5px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sec-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* ── PROFILE ── */
+  .objective {
+    font-size: 10px;
+    color: var(--dark);
+    line-height: 1.75;
+  }
+
+  /* ── EDU + SKILLS ROW ── */
+  .edu-skills-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+
+  /* ── EDUCATION ── */
+  .edu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .edu-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4px;
+    padding-bottom: 9px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .edu-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .edu-item .degree {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 1px;
+  }
+
+  .edu-item .school {
+    font-size: 8.5px;
+    color: var(--mid);
+    line-height: 1.5;
+  }
+
+  .edu-item .year {
+    font-size: 8px;
+    color: var(--soft);
+    font-weight: 500;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .edu-item .score {
+    font-size: 8.5px;
+    font-weight: 600;
+    color: var(--accent);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* ── SKILLS ── */
+  .skill-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .skill-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 9px;
+  }
+
+  .skill-row .slabel {
+    font-weight: 600;
+    color: var(--dark);
+    min-width: 68px;
+    flex-shrink: 0;
+    font-size: 8.5px;
+  }
+
+  .skill-row .sval { color: var(--mid); }
+
+  /* ── PROJECTS ── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px 20px;
+  }
+
+  .project {
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .project:nth-last-child(-n+3) { border-bottom: none; padding-bottom: 0; }
+
+  .project h3 {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 4px;
+  }
+
+  .project p {
+    font-size: 8.5px;
+    color: var(--mid);
+    line-height: 1.6;
+    margin-bottom: 5px;
+  }
+
+  .proj-link {
+    font-size: 7.5px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .proj-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+
+  .proj-tag {
+    font-size: 7px;
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 1.5px 6px;
+    border-radius: 3px;
+  }
+
+  /* ── BOTTOM ROW ── */
+  .bottom-row {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 0.7fr;
+    gap: 24px;
+  }
+
+  .cert-item {
+    font-size: 8.5px;
+    color: var(--mid);
+    padding: 3.5px 0;
+    border-bottom: 1px dashed var(--line);
+    line-height: 1.4;
+  }
+
+  .cert-item:last-child { border-bottom: none; }
+
+  .cert-item strong {
+    display: block;
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--dark);
+  }
+
+  .lang-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 9px;
+    padding: 4px 0;
+    color: var(--dark);
+    border-bottom: 1px dashed var(--line);
+  }
+
+  .lang-row:last-child { border-bottom: none; }
+
+  .lang-level {
+    font-size: 7.5px;
+    color: var(--soft);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .ref-text {
+    font-size: 8.5px;
+    font-style: italic;
+    color: var(--soft);
+    padding-top: 3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="cv">
+
+  <!-- HEADER -->
+  <header class="cv-header">
+    <div class="name">Muhammad <span>Hammad</span></div>
+    <div class="title-tag">Computer Science Student</div>
+    <div class="contact-row">
+      <div class="contact-item">Multan, Pakistan</div>
+      <div class="contact-item"><a href="mailto:hammadmazhar512@gmail.com">hammadmazhar512@gmail.com</a></div>
+      <div class="contact-item"><a href="https://github.com/hammad61245">github.com/hammad61245</a></div>
+      <div class="contact-item"><a href="https://linkedin.com/in/muhammad-hammad">linkedin.com/in/muhammadhammad</a></div>
+      <div class="contact-item"><a href="https://leetcode.com/u/hammad61245/">leetcode.com/hammad61245</a></div>
+    </div>
+  </header>
+
+  <div class="cv-body">
+
+    <!-- PROFILE -->
+    <div class="section">
+      <div class="sec-title">Profile</div>
+      <div class="objective">
+        I'm a Computer Science student at Air University Multan Campus with hands-on experience in full-stack web development, database design, and desktop application development. I've built projects ranging from SaaS platforms to booking systems, and I'm comfortable working across the stack. I pick up new tools quickly and like building things that actually work well and are useful to people.
+      </div>
+    </div>
+
+    <!-- EDUCATION + SKILLS -->
+    <div class="edu-skills-row">
+
+      <div class="section">
+        <div class="sec-title">Education</div>
+        <div class="edu-list">
+
+          <div class="edu-item">
+            <div>
+              <div class="degree">BS Computer Science</div>
+              <div class="school">Air University Multan Campus</div>
+            </div>
+            <div>
+              <div class="year">2022 — Present</div>
+              <div class="score">CGPA: 3.2 / 4.0</div>
+            </div>
+          </div>
+
+          <div class="edu-item">
+            <div>
+              <div class="degree">FSC Pre-Medical</div>
+              <div class="school">Multan Nishat College</div>
+            </div>
+            <div>
+              <div class="year">2023</div>
+              <div class="score">965 / 1000</div>
+            </div>
+          </div>
+
+          <div class="edu-item">
+            <div>
+              <div class="degree">Matriculation — Pre-Medical</div>
+              <div class="school">Zakariya Public School</div>
+            </div>
+            <div>
+              <div class="year">2021</div>
+              <div class="score">1092 / 1100</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-title">Skills</div>
+        <div class="skill-grid">
+          <div class="skill-row"><span class="slabel">Languages</span><span class="sval">C++, C#, JavaScript, Python , SQL</span></div>
+          <div class="skill-row"><span class="slabel">Frontend</span><span class="sval">HTML, CSS, React, Tailwind, Bootstrap</span></div>
+          <div class="skill-row"><span class="slabel">Backend</span><span class="sval">Node.js, Express</span></div>
+          <div class="skill-row"><span class="slabel">Database</span><span class="sval">MongoDB, SQL Server , SQLite</span></div>
+          <div class="skill-row"><span class="slabel">Tools</span><span class="sval">Git, GitHub, VS Code, Bash</span></div>
+          <div class="skill-row"><span class="slabel">FrameWorks</span><span class="sval">.NET , Django , Next.js , Flask </span></div>
+
+          
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PROJECTS -->
+    <div class="section">
+      <div class="sec-title">Projects</div>
+      <div class="projects-grid">
+
+        <div class="project">
+          <h3>Event Tickets SaaS App</h3>
+          <p>Multi-tenant SaaS platform for event creation, ticket management, and attendee tracking. Includes user authentication, dashboard analytics, and ticket generation.</p>
+          <a class="proj-link" href="https://github.com/Hammadmazhar61245/Event-Tickets-Management-SaaS-App">github.com/…/Event-Tickets-SaaS</a>
+          <div class="proj-tags">
+            <span class="proj-tag">React</span>
+            <span class="proj-tag">Node.js</span>
+            <span class="proj-tag">MongoDB</span>
+            <span class="proj-tag">SaaS</span>
+          </div>
+        </div>
+
+        <div class="project">
+          <h3> Auto Trading Bot | Python </h3>
+          <p>Developed an automated gold trading bot for XAU/USD using Python and MetaTrader 5.
+Integrated machine learning models and technical indicators for trade prediction and execution.
+Implemented risk management features including stop-loss, take-profit, and trailing stop automation , using Meta-Trader API</p>
+         
+          <div class="proj-tags">
+            <span class="proj-tag">Python </span>
+            <span class="proj-tag">LightBGM </span>
+           
+           
+          </div>
+        </div>
+         <div class="project">
+          <h3> Weather ForeCast Application </h3>
+          <p>A simple web app that lets users search for a city and 
+            retrieve its current weather conditions — temperature, description,
+             and weather icon — using the OpenWeatherMap API.</p>
+         
+          <div class="proj-tags">
+            <span class="proj-tag">Python 3.13 </span>
+            <span class="proj-tag">Flask</span>
+            <span class="proj-tag">BootStrap</span>
+            <span class="proj-tag">Open Weather Api </span>
+            
+
+
+
+           
+           
+          </div>
+        </div>
+        
+
+        
+
+        
+
+        <div class="project">
+          <h3>Full Stack Semester Project</h3>
+          <p>Web application with a RESTful API backend, dynamic React frontend, and JWT-based authentication. Integrated a database layer and built a responsive UI throughout.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">React</span>
+            <span class="proj-tag">Node.js</span>
+            <span class="proj-tag">Express</span>
+            <span class="proj-tag">MongoDB</span>
+          </div>
+        </div>
+
+        <div class="project">
+          <h3>Railway Reservation System</h3>
+          <p>Desktop application for end-to-end train booking. Handles passenger management, schedule tracking, seat allocation, and user feedback.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">C#</span>
+            <span class="proj-tag">SQL Server</span>
+            <span class="proj-tag">Desktop App</span>
+          </div>
+        </div>
+
+        <div class="project">
+          <h3>Portfolio Website</h3>
+          <p>Personal portfolio site built with HTML, CSS, and C# to showcase projects and skills. Clean layout with responsive design and cross-device compatibility.</p>
+          <a class="proj-link" href="https://github.com/Hammadmazhar61245/Portfolio">github.com/Hammadmazhar61245/Portfolio</a>
+          <div class="proj-tags">
+            <span class="proj-tag">HTML</span>
+            <span class="proj-tag">CSS</span>
+            <span class="proj-tag">C#</span>
+            <span class="proj-tag">JavaScript</span>
+          </div>
+        </div>
+
+        <div class="project">
+          <h3>MongoDB Database Project</h3>
+          <p>Designed NoSQL collections and document schemas for scalable architecture. Defined inter-collection relationships and optimised for read-heavy workloads.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">MongoDB</span>
+            <span class="proj-tag">NoSQL</span>
+            <span class="proj-tag">Schema Design</span>
+          </div>
+        </div>
+
+        <div class="project">
+          <h3>Static Portfolio Website</h3>
+          <p>Responsive personal website showcasing academic and technical work. Built from scratch focusing on fast load times and clean structure across devices using the github hosting pages </p>
+          <div class="proj-tags">
+            <span class="proj-tag">HTML</span>
+            <span class="proj-tag">CSS</span>
+            <span class="proj-tag">Responsive</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BOTTOM ROW -->
+    <div class="bottom-row">
+
+      <div class="section">
+        <div class="sec-title">Certifications</div>
+        <div class="cert-item"><strong>Web Development</strong>Coursera / Online</div>
+        <div class="cert-item"><strong>Programming Fundamentals</strong>Coursera / Online</div>
+        <div class="cert-item"><strong>Database Systems</strong>Coursera / Online</div>
+        <div class="cert-item"><strong>Bash Scripting</strong>Online Course</div>
+      </div>
+
+      <div class="section">
+        <div class="sec-title">Languages</div>
+        <div class="lang-row"><span>English</span><span class="lang-level">Professional</span></div>
+        <div class="lang-row"><span>Urdu</span><span class="lang-level">Native</span></div>
+      </div>
+      
+      <div class="section">
+        <div class="sec-title">Soft-Skills</div>
+        <div class="ref-text">Passion For learning </div>
+        <div class="ref-text"> Prolem Solving</div>
+        <div class="ref-text"> Team Work </div>
+         <div class="ref-text"> Communication Skills </div>
+      </div>
+      
+
+      <div class="section">
+        <div class="sec-title">References</div>
+        <div class="ref-text">Available upon request.</div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
